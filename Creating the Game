@@ -1,3 +1,4 @@
+# buggy Rn
 import pygame, time
 pygame.init()
 #for the Background colour
@@ -24,7 +25,6 @@ def game_loop():
     #creating a loop to give the game a gray background
     GameColor = True
     if GameColor == True:
-
         gamedisplay.fill(gray)
         car(x, y)
         pygame.display.update()
@@ -35,6 +35,15 @@ def game_loop():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 gameLoop = True
+        if event.type==pygame.KEYDOWN:
+            if event.key== pygame.K_LEFT:
+                x_change = -5
+            if event.key == pygame.K_RIGHT:
+                x_change = 5
+        if event.type == pygame.KEYUP:
+            if event.key== pygame.K_LEFT or event.key == pygame.K_RIGHT:
+                x_change = 0  
+        x += x_change
 game_loop()
 pygame.quit()
 quit()

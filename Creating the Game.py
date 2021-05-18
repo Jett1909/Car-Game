@@ -1,10 +1,8 @@
-import pygame, time, os
+import pygame, time
 pygame.init()
 #MOST IMPORTANT MUSIC
-pygame.mixer.music.load('MARIOCART.mp3')
-pygame.mixer.music.play(0)
-#for the Background colour
-gray = (119,118,110)
+pygame.mixer.music.load('MARIOCART.mp3') #loads the musci file 
+pygame.mixer.music.play(0) #plays the music
 #set the name of the Game
 pygame.display.set_caption('Car Racing Game')
 #Size of display screen
@@ -12,6 +10,8 @@ WIDTH = 800
 HEIGHT = 600
 #more variables
 CARSPEED = 5
+#colours
+black = (0, 0, 0)
 #creating the game display
 gamedisplay = pygame.display.set_mode((WIDTH, HEIGHT))
 #creates a clock to keep track of the time since the game was opened
@@ -23,7 +23,24 @@ backGroundPic = pygame.image.load("Grass.jpg")
 backGroundPic = pygame.transform.scale(backGroundPic, (136, 273))
 Road = pygame.image.load("Road.jpg")
 Road = pygame.transform.scale(Road, (600, 900))
-Car_Width = 100
+Car_Width = 271
+
+def text_objects(text, font):
+    textsurface = font.render(text, True, black)
+    return textsurface, textsurface.get_rect()
+
+def message_display(text):
+    largetext = pygame.font.Font("freesansbold.ttf", 80)
+    textsurf, textrect = text_objects(text, largetext)
+    textrect.center = ( (WIDTH/2), (HEIGHT/2) )
+    gamedisplay.blit(textsurf, textrect)
+    pygame.display.update()
+    time.sleep(3)
+    game_loop()
+
+def crash():
+    message_display("YOU CRASHED")
+
 def background():
     gamedisplay.blit(backGroundPic, (0, 0))
     gamedisplay.blit(backGroundPic, (0, 200))
@@ -42,7 +59,7 @@ def game_loop():
     #call global Variable
     global gray
 
-    #Crating a loop to check if the X(quit) is pressed
+    #Crating a loop to check if the X(quit) is pressed and checking if left or right arrow is pressed
     bumped = False
     while not bumped:
         for event in pygame.event.get():
@@ -60,11 +77,11 @@ def game_loop():
                 x_change = 0  
         x += x_change
         #creating a loop to give the game a gray background
-        gamedisplay.fill(gray)
         background()
         car(x, y)
-        if x > 690-Car_Width or x<110:
-            bumped = True
+        #creates the boarder for the road
+        if x > 564 or x<150:
+            crash()
         pygame.display.update()
         clock.tick(60)
 game_loop()
